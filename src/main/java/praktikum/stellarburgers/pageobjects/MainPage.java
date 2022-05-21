@@ -1,12 +1,14 @@
 package praktikum.stellarburgers.pageobjects;
 
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.WebDriverRunner.url;
+import static org.openqa.selenium.support.How.CLASS_NAME;
 
 
 public class MainPage {
@@ -15,19 +17,18 @@ public class MainPage {
 
     public static final String URLStellarBurgers = "https://stellarburgers.nomoreparties.site/";
 
+    private static final String activeTabCssClass = "tab_tab_type_current__2BEPc";
 
     // Локатор "Конструктор"
-    @FindBy(how = How.XPATH, using = ".//li[1]/a[@class='AppHeader_header__link__3D_hX']")
-    //@FindBy(how = How.XPATH, using = "/html/body/div/div/header/nav/ul/li[1]/a")
+    @FindBy(how = How.XPATH, using = ".//p[contains(text(), 'Конструктор')]/..")
     private SelenideElement designerMainPage;
 
     // Локатор логотипа "stellar burgers"
-    @FindBy(how = How.XPATH, using = ".//div[@class='AppHeader_header__logo__2D0X2']")
+    @FindBy(how = CLASS_NAME, using = "AppHeader_header__logo__2D0X2")
     private SelenideElement logoMainPage;
 
     // Локатор "Личный кабинет"
-    @FindBy(how = How.XPATH, using = ".//a[@href='/account']")
-    //@FindBy(how = How.XPATH, using = ".//a[@class='AppHeader_header__link__3D_hX']")
+    @FindBy(how = How.CSS, using = "a[href='/account']")
     private SelenideElement personalAccountMainPage;
 
     // Локатор кнопки "Войти в аккаунт" на главной странице
@@ -39,32 +40,13 @@ public class MainPage {
     private SelenideElement placeAnOrder;
 
     // Локатор секции ингредиентов на главной странице
-    @FindBy(how = How.XPATH, using = ".//section[@class='BurgerIngredients_ingredients__1N8v2']")
+    @FindBy(how = How.CLASS_NAME, using = "BurgerIngredients_ingredients__1N8v2")
     private SelenideElement sectionIngredientsMainPage;
 
-    // Локатор раздела "Булки" над лентой
-    @FindBy(how = How.XPATH, using = "/html/body/div/div/main/section[1]/div[1]/div[1]")
-    private SelenideElement rollsOver;
+    // Коллекция локаторов разделов "Булки", "Соусы", "Начинки" (над лентой)
+    @FindBy(how = How.CSS, using = "div.tab_tab__1SPyG")
+    private ElementsCollection burgerComponents;
 
-    // Локатор раздела "Булки" внутри ленты
-    @FindBy(how = How.XPATH, using = ".//h2[contains(text(),'Булки')]")
-    private SelenideElement rollsInside;
-
-    // Локатор надписи "Соусы" над лентой
-    @FindBy(how = How.XPATH, using = "/html/body/div/div/main/section[1]/div[1]/div[2]")
-    private SelenideElement saucesOver;
-
-    // Локатор надписи "Соусы" внутри ленты
-    @FindBy(how = How.XPATH, using = ".//h2[contains(text(),'Соусы')]")
-    private SelenideElement saucesInside;
-
-    // Локатор надписи "Начинки" над лентой
-    @FindBy(how = How.XPATH, using = "/html/body/div/div/main/section[1]/div[1]/div[3]")
-    private SelenideElement fillingsOver;
-
-    // Локатор надписи "Начинки" внутри ленты
-    @FindBy(how = How.XPATH, using = ".//h2[contains(text(),'Начинки')]")
-    private SelenideElement fillingsInside;
 
 
     @Step("Нажатие на кнопку 'Войти в аккаунт' на главной странице неавторизованного пользователя")
@@ -79,7 +61,7 @@ public class MainPage {
 
     @Step("Возврат истинности отображения кнопки 'Оформить заказ' у авторизованного пользователя")
     public boolean isButtonPlaceAnOrder() {
-        return placeAnOrder.isDisplayed();
+        return placeAnOrder.shouldBe(exist, appear, visible).isDisplayed();
     }
 
     @Step("Нажатие на 'Личный кабинет' в шапке")
@@ -104,38 +86,49 @@ public class MainPage {
     }
 
     @Step("Нажатие на раздел 'Булки' над лентой")
-    public void clickRollsOver() {
-        rollsOver.click();
+    public void clickBunsOverNotActive() {
+        getBunsElement().shouldBe(exist, appear, visible).click();
     }
 
-    @Step("Возврат истинности отображения 'Булки' внутри ленты")
-    public boolean isRollsInside() {
-        return rollsInside.isDisplayed();
+    @Step("Возврат истинности отображения АКТИВНОГО раздела 'Булки'")
+    public boolean isBunsOverActive() {
+        return getBunsElement().shouldBe(cssClass(activeTabCssClass)).getText().equals("Булки");
     }
 
-    @Step("Нажатие на раздел 'Соусы'над лентой")
-    public void clickSauceOver() {
-        saucesOver.click();
+    @Step("Нажатие на раздел 'Соусы' над лентой")
+    public void clickSauceOverNotActive() {
+        getSaucesElement().shouldBe(exist, appear, visible).click();
     }
 
-    @Step("Возврат истинности отображения 'Соусы' внутри ленты")
-    public boolean isSauceInside() {
-        return saucesInside.isDisplayed();
+    @Step("Возврат истинности отображения АКТИВНОГО раздела 'Соусы'")
+    public boolean isSaucesOverActive() {
+        return getSaucesElement().shouldBe(cssClass(activeTabCssClass)).getText().equals("Соусы");
     }
 
     @Step("Нажатие на раздел 'Начинки' над лентой")
-    public void clickFillingsOver() {
-        fillingsOver.click();
-        sleep(3000);
+    public void clickFillingsOverNotActive() {
+        getFillingsElement().shouldBe(exist, appear, visible).click();
     }
 
-    @Step("Возврат истинности отображения 'Начинки' внутри ленты")
-    public boolean isFillingsInside() {
-        return fillingsInside.isDisplayed();
+    @Step("Возврат истинности отображения АКТИВНОГО раздела 'Начинки'")
+    public boolean isFillingsOverActive() {
+        return getFillingsElement().shouldBe(cssClass(activeTabCssClass)).getText().equals("Начинки");
     }
 
     @Step("Возврат истинности отображения секции ингредиентов'")
     public boolean isSectionIngredients() {
         return sectionIngredientsMainPage.isDisplayed();
+    }
+
+    private SelenideElement getBunsElement() {
+        return  burgerComponents.get(0);
+    }
+
+    private SelenideElement getSaucesElement() {
+        return  burgerComponents.get(1);
+    }
+
+    private SelenideElement getFillingsElement() {
+        return  burgerComponents.get(2);
     }
 }

@@ -7,7 +7,7 @@ import org.openqa.selenium.support.How;
 
 public class ForgotPasswordPage {
     // Локатор кнопки "Войти" на странице восстановления пароля
-    @FindBy(how = How.XPATH, using =".//a[@class='Auth_link__1fOlj'][@href='/login']")
+    @FindBy(how = How.CSS, using ="a[class='Auth_link__1fOlj'][href='/login']")
     private SelenideElement logInForgotPasswordPage;
 
 

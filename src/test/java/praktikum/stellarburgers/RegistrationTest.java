@@ -23,6 +23,7 @@ public class RegistrationTest {
     UserClientAPI userClientAPI = new UserClientAPI();
 
 
+
     // Формирование данных пользователя, открытие браузера, главной страницы, переход на форму авторизации
     @Before
     @Step("@Before")
@@ -30,6 +31,7 @@ public class RegistrationTest {
         email = RandomStringUtils.randomAlphabetic(10) + "@ya.ru";
         password = RandomStringUtils.randomAlphabetic(10);
         name = RandomStringUtils.randomAlphabetic(10);
+
         Configuration.browser = browserTest;
         MainPage mainPage = open(MainPage.URLStellarBurgers, MainPage.class);
         mainPage.clickLogInAccount();

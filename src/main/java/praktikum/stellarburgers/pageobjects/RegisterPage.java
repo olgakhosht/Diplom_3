@@ -9,27 +9,23 @@ import org.openqa.selenium.support.How;
 public class RegisterPage {
 
     // Локатор поля Имя
-    @FindBy(how = How.XPATH, using = ".//fieldset[1]/div/div[@class='input pr-6 pl-6 input_type_text input_size_default']/input[@name ='name']")
-    //@FindBy(how = How.XPATH, using = ".//div[@class='input pr-6 pl-6 input_type_text input_size_default']/input[@name ='name']")
+    @FindBy(how = How.XPATH, using = ".//label[contains(text(),'Имя')]/../input")
     private SelenideElement nameRegisterPage;
 
     // Локатор поля "Email"
-    @FindBy(how = How.XPATH, using = ".//fieldset[2]/div/div[@class='input pr-6 pl-6 input_type_text input_size_default']/input[@name ='name']")
-    //@FindBy(how = How.XPATH, using = "/html/body/div/div/main/div/form/fieldset[2]/div/div/input")
+    @FindBy(how = How.XPATH, using = ".//label[contains(text(),'Email')]/../input")
     private SelenideElement emailRegisterPage;
 
     // Локатор поля "Пароль"
-    @FindBy(how = How.XPATH, using = ".//input[@class='text input__textfield text_type_main-default'][@type ='password']")
+    @FindBy(how = How.XPATH, using = ".//input[@type ='password']")
     private SelenideElement passwordRegisterPage;
 
     // Локатор кнопки "Зарегистрироваться" на странице регистрации
     @FindBy(how = How.XPATH, using = ".//button[text()='Зарегистрироваться']")
-    //@FindBy(how = How.XPATH, using = ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_medium__3zxIa']")
     private SelenideElement registerRegisterPage;
 
-
     // Локатор кнопки "Войти" на странице регистрации
-    @FindBy(how = How.XPATH, using = ".//a[@class='Auth_link__1fOlj'][@href='/login']")
+    @FindBy(how = How.CLASS_NAME, using = "Auth_link__1fOlj")
     private SelenideElement logInRegisterPage;//
 
     // Локатор появляющегося сообщения "Некорректный пароль" при некорректном заполнении поля "Пароль"

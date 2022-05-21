@@ -106,32 +106,29 @@ public class TransitionsWithAuthorizationAndExitTest {
     @DisplayName("Переход успешный к разделу 'Булки'")
     public void designerSuccessfulTransitionToRolls() {
         MainPage mainPage = page(MainPage.class);
-        assertThat("В ленте нет заголовка 'Булки'",
-                mainPage.isRollsInside(), equalTo(true));
-        mainPage.clickFillingsOver();
-        mainPage.clickRollsOver();
-        assertThat("При переходе к разделу 'Булки' в ленте нет заголовка 'Булки'",
-                mainPage.isRollsInside(), equalTo(true));
+        assertThat("У активного раздела заголовок не 'Булки'",
+                mainPage.isBunsOverActive(), equalTo(true));
+        mainPage.clickSauceOverNotActive();
+        mainPage.clickBunsOverNotActive();
+        assertThat("При переходе к разделу 'Булки' заголовок раздела не 'Булки'",
+                mainPage.isBunsOverActive(), equalTo(true));
     }
 
     @Test
     @DisplayName("Переход успешный к разделу 'Соусы'")
     public void designerSuccessfulTransitionToSauces() {
         MainPage mainPage = page(MainPage.class);
-        mainPage.clickSauceOver();
-        assertThat("При переходе к разделу 'Соусы' в ленте нет заголовка 'Соусы'",
-                mainPage.isSauceInside(), equalTo(true));
-        //assertThat("При переходе к разделу 'Соусы' в ленте отображается заголовок 'Булки'", mainPage.isRollsInside(), equalTo(false));
+        mainPage.clickSauceOverNotActive();
+        assertThat("При переходе к разделу 'Соусы' заголовок раздела не 'Соусы'",
+                mainPage.isSaucesOverActive(), equalTo(true));
     }
 
     @Test
     @DisplayName("Переход успешный к разделу 'Начинки'")
     public void designerSuccessfulTransitionToFillings() {
         MainPage mainPage = page(MainPage.class);
-        mainPage.clickFillingsOver();
-        assertThat("При переходе к разделу 'Начинки' в ленте нет заголовка 'Начинки'",
-                mainPage.isFillingsInside(), equalTo(true));
-        //assertThat("При переходе к разделу 'Начинки' в ленте отображается заголовок 'Булки'", mainPage.isRollsInside(), equalTo(false));
-        //assertThat("При переходе к разделу 'Начинки' в ленте отображается заголовок 'Соусы'", mainPage.isSauceInside(), equalTo(false));
+        mainPage.clickFillingsOverNotActive();
+        assertThat("При переходе к разделу 'Начинки' заголовок раздела не 'Начинки'",
+                mainPage.isFillingsOverActive(), equalTo(true));
     }
 }

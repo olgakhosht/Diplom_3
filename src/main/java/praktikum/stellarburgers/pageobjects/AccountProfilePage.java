@@ -5,24 +5,21 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Condition.*;
 
 
 public class AccountProfilePage {
 
     // Локатор поля "Имя" в личном кабинете
-    @FindBy(how = How.XPATH, using = ".//li[1]/div/div/input[@class='text input__textfield text_type_main-default input__textfield-disabled'][@type='text']")
-    //@FindBy(how = How.XPATH, using = "//*[@id='root']/div/main/div/div/div/ul/li[1]/div/div/input")
+    @FindBy(how = How.XPATH, using = ".//input[@class='text input__textfield text_type_main-default input__textfield-disabled'][@name='Name']")
     private SelenideElement nameLK;
 
     // Локатор поля "Email" в личном кабинете
-    @FindBy(how = How.XPATH, using = ".//li[2]/div/div/input[@class='text input__textfield text_type_main-default input__textfield-disabled'][@type='text']")
-    //@FindBy(how = How.XPATH, using= "/html/body/div/div/main/div/div/div/ul/li[2]/div/div/input")
+    @FindBy(how = How.XPATH, using = ".//input[@class='text input__textfield text_type_main-default input__textfield-disabled'][@type='text'][@name='name']")
     private SelenideElement emailLK;
 
     // Локатор поля "Пароль" в личном кабинете
     @FindBy(how = How.XPATH, using = ".//input[@class='text input__textfield text_type_main-default input__textfield-disabled'][@type='password']")
-    //@FindBy(how = How.XPATH, using = "/html/body/div/div/main/div/div/div/ul/li[3]/div/div/input")
     private SelenideElement passwordLK;
 
     // Локатор кнопки "Выход" в личном кабинете
@@ -54,7 +51,7 @@ public class AccountProfilePage {
 
     @Step("Нажатие на кнопку 'Выход' в личном кабинете")
     public void clickExit() {
-        exit.click();
+        exit.shouldBe(exist, appear, visible).click();
     }
 
     @Step("Возврат значения из поля 'Имя' личного кабинета")
@@ -84,10 +81,9 @@ public class AccountProfilePage {
 
     @Step("Возврат истинности отображения полей и кнопок формы личного кабинета авторизованного пользователя")
     public boolean isPersonalAccountForm() {
-        sleep(3000);
-        boolean personalAccountForm = nameLK.isDisplayed() && emailLK.isDisplayed() &&
-                passwordLK.isDisplayed() && profileLK.isDisplayed() && orderHistoryLK.isDisplayed() &&
-                exit.isDisplayed() && saveLK.isDisplayed()  && cancelLK.isDisplayed() && informationLabelLK.isDisplayed();
+        boolean personalAccountForm = nameLK.shouldBe(exist, appear, visible).isDisplayed() && emailLK.shouldBe(exist, appear, visible).isDisplayed() &&
+                passwordLK.shouldBe(exist, appear, visible).isDisplayed() && profileLK.shouldBe(exist, appear, visible).isDisplayed() && orderHistoryLK.shouldBe(exist, appear, visible).isDisplayed() &&
+                exit.shouldBe(exist, appear, visible).isDisplayed() && saveLK.shouldBe(exist, appear, visible).isDisplayed()  && cancelLK.shouldBe(exist, appear, visible).isDisplayed() && informationLabelLK.shouldBe(exist, appear, visible).isDisplayed();
         return personalAccountForm;
     }
 

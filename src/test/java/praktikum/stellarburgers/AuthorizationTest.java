@@ -31,6 +31,7 @@ public class AuthorizationTest {
         name = RandomStringUtils.randomAlphabetic(10);
 
         Configuration.browser = browserTest;
+
         MainPage mainPage = open(MainPage.URLStellarBurgers, MainPage.class);
         mainPage.clickPersonalAccount();
 
